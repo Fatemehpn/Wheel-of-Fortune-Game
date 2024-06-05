@@ -3,7 +3,46 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="styles/style.css" />
+        <script defer src="script.js"></script>
+        <title>Game</title>
     </head>
-    <body></body>
+    <body>
+        <header></header>
+        <main>
+            <audio autoplay loop muted>
+                <source src="Evening-Jazz- Whisper.mp3" type="audio/mpeg" />
+            </audio>
+            <h1>Wheel of Fortune</h1>
+            <section class="difficulty-view">
+                <h2>Choose difficulty level</h2>
+                <button class="difficulty-btns">Easy</button>
+                <button class="difficulty-btns">Moderate</button>
+                <button class="difficulty-btns">Difficulty</button>
+            </section>
+            <section class="wheel-view">
+                <div class="wheel-images-wrapper">
+                    <!-- <div class="wheel-img"> -->
+                    <img
+                        src="media/wheel-of-fortune-v2.svg"
+                        alt="wheel-of-fortune"
+                        id="wheel-img"
+                    />
+                    <!-- </div> -->
+                    <img
+                        src="media/gold-triangle.svg"
+                        alt="gold triangle"
+                        id="triangle-img"
+                    />
+                </div>
+            </section>
+        </main>
+        <footer></footer>
+    </body>
 </html>
