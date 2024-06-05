@@ -16,14 +16,54 @@ h1 {
     font-size: 3rem;
 }
 
-/* button {
-    color: white;
-} */
+h2 {
+    font-size: 2rem;
+    margin-bottom: 4rem;
+}
+
+@keyframes fade-in {
+    0% {
+        /* transform: translateY(-100%); */
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        /* transform: translateY(2rem); */
+        opacity: 1;
+    }
+}
 
 /* -------------------------Index.html------------------ */
+.speaker-icon {
+    fill: white;
+    position: fixed;
+    top: 0.8rem;
+    left: 0.5rem;
+}
+
 .difficulty-view {
-    margin: 0 auto;
+    display: none;
+    margin: 10rem auto 3rem;
     text-align: center;
+}
+.difficulty-view.loaded {
+    display: block;
+    animation: fade-in 3s ease-in normal;
+}
+
+.difficulty-view:last-child {
+    margin-right: 0;
+}
+.difficulty-btns {
+    border: none;
+    border-radius: 0.5rem;
+    padding: 1rem 2rem;
+    margin-right: 1rem;
+    font-size: 1rem;
+    font-family: "Gloria Hallelujah", cursive;
 }
 
 .wheel-view {
@@ -49,3 +89,5 @@ h1 {
     top: 16.7rem;
     left: 47.1%;
 }
+
+/* ---------------------------Keyframes--------------------- */

@@ -5,6 +5,7 @@
 // views
 const difficultyView = document.querySelector(".difficulty-view");
 const wheelView = document.querySelector(".wheel-view");
+const difficultyHeader = document.querySelector(".difficulty-view h2");
 
 // difficulty buttons
 const difficultyBtns = document.querySelectorAll(".difficulty-btns");
@@ -15,4 +16,10 @@ difficultyBtns.forEach((btn) => {
         difficultyView.style.display = "none";
         wheelView.style.display = "block";
     });
+});
+
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        difficultyView.classList.add("loaded");
+    }, 500);
 });
