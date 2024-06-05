@@ -1,0 +1,21 @@
+body {
+    background-color: black;
+}
+
+/* -------------------------Index.html------------------ */
+.wheel-images-wrapper {
+    width: 80%;
+    height: 10rem;
+}
+
+#wheel-img {
+    position: relative;
+    place-content: center;
+}
+
+#triangle-img {
+    width: 5rem;
+    height: 5rem;
+    position: absolute;
+    top: 0;
+}
