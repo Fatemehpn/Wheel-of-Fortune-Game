@@ -23,26 +23,56 @@ h2 {
 
 @keyframes fade-in {
     0% {
-        /* transform: translateY(-100%); */
         opacity: 0;
     }
+    25% {
+        opacity: 0.25;
+    }
+
     50% {
         opacity: 0.5;
     }
-
+    70% {
+        opacity: 0.75;
+    }
     100% {
-        /* transform: translateY(2rem); */
         opacity: 1;
     }
 }
 
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+    }
+    25% {
+        opacity: 0.75;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+    70% {
+        opacity: 0.25;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
 /* -------------------------Index.html------------------ */
+/* ---------audio-------- */
 .speaker-icon {
     fill: white;
     position: fixed;
     top: 0.8rem;
     left: 0.5rem;
 }
+
+.speaker-icon-muted {
+    display: none;
+}
+
+/* -------------Difficulty View--------- */
 
 .difficulty-view {
     display: none;
@@ -51,7 +81,11 @@ h2 {
 }
 .difficulty-view.loaded {
     display: block;
-    animation: fade-in 3s ease-in normal;
+    animation: fade-in 2s ease-in normal;
+}
+
+.difficulty-view.fade-out {
+    animation: fade-out 1s;
 }
 
 .difficulty-view:last-child {
