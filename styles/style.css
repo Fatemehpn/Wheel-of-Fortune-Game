@@ -2,19 +2,33 @@ html {
     font-family: "Gloria Hallelujah", cursive;
 }
 body {
-    background-color: black;
+    background-color: #111111;
+}
+
+h1,
+h2 {
+    color: white;
 }
 
 h1 {
-    color: white;
     margin: 2rem auto;
     text-align: center;
     font-size: 3rem;
 }
 
+/* button {
+    color: white;
+} */
+
 /* -------------------------Index.html------------------ */
+.difficulty-view {
+    margin: 0 auto;
+    text-align: center;
+}
+
 .wheel-view {
     margin: 10rem auto;
+    display: none;
 }
 
 .wheel-images-wrapper {
