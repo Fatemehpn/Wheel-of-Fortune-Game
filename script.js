@@ -21,20 +21,20 @@ const mutedAudio = document.querySelector(".speaker-icon-muted");
 const pointerElem = document.getElementById("triangle-img");
 const entireWheel = document.getElementById("wheel-svg");
 const wheelWrapperElem = document.querySelector(".wheel-img-wrapper");
-const slice350 = document.querySelector(".class-350");
-const slice150 = document.querySelector(".class-150");
-const slice550 = document.querySelector(".class-550");
-const slice400 = document.querySelector(".class-400");
-const slice300 = document.querySelector(".class-300");
-const slice250 = document.querySelector(".class-250");
-const slice500 = document.querySelector(".class-500");
-const slice200 = document.querySelector(".class-200");
-const slice450 = document.querySelector(".class-450");
-const slice600 = document.querySelector(".class-600");
-const sliceSpinAgain = document.querySelector(".spin-again");
-const sliceDoublePoints = document.querySelector(".double-points");
+const slice350 = document.getElementById("class-350");
+const slice150 = document.getElementById("class-150");
+const slice550 = document.getElementById("class-550");
+const slice400 = document.getElementById("class-400");
+const slice300 = document.getElementById("class-300");
+const slice250 = document.getElementById("class-250");
+const slice500 = document.getElementById("class-500");
+const slice200 = document.getElementById("class-200");
+const slice450 = document.getElementById("class-450");
+const slice600 = document.getElementById("class-600");
+const slice100 = document.getElementById("class-100");
+const sliceSpinAgain = document.getElementById("spin-again");
 
-// array of all slices
+// array getElementById
 let allSlices = [
     slice150,
     slice200,
@@ -46,16 +46,44 @@ let allSlices = [
     slice500,
     slice550,
     slice600,
-    sliceDoublePoints,
+    slice100,
     sliceSpinAgain,
 ];
 
+let allDegs = [];
 // funtion to get the index of the max value in an array
 
 // event listener to rotate the wheel and get the highest pie
 pointerElem.addEventListener("click", () => {
-    let degree = Math.floor(Math.random() * 360);
-    entireWheel.style.transform = `rotate(${degree}deg)`;
+    // debugger;
+    let degree = Math.floor(Math.random() * 720) + 720;
+    allDegs.push(degree);
+    console.log(allDegs);
+    if (allDegs[1] > allDegs[0]) {
+        entireWheel.style.transform = `rotate(${degree}deg)`;
+        allDegs.shift();
+        console.log(allDegs);
+    } else if (allDegs[1] < allDegs[0]) {
+        allDegs[1] = allDegs[1] + allDegs[0];
+        entireWheel.style.transform = `rotate(${allDegs[1]}deg)`;
+        allDegs.shift();
+        console.log(allDegs);
+    }
+    // if (allDegs.length <= 1) {
+    //     allDegs.push(degree);
+    //     entireWheel.style.transform = `rotate(${degree}deg)`;
+    // } else if (allDegs.length == 2) {
+    //     if (allDegs[1] < allDegs[0]) {
+    //         degree = allDegs[0] + allDegs[1];
+    //         entireWheel.style.transform = `rotate(${degree}deg)`;
+    //     } else {
+    //         entireWheel.style.transform = `rotate(${degree}deg)`;
+    //     }
+    // } else if (allDegs.length > 2) {
+    //     allDegs.shift();
+    // }
+
+    console.log(degree);
     let boundingValues = [];
     allSlices.forEach((slice) => {
         const boundingClientSlice = slice.getBoundingClientRect();
