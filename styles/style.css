@@ -11,7 +11,7 @@ h2 {
 }
 
 h1 {
-    margin: 2rem auto;
+    margin: 2rem auto 4rem;
     text-align: center;
     font-size: 3rem;
 }
@@ -19,6 +19,13 @@ h1 {
 h2 {
     font-size: 2rem;
     margin-bottom: 4rem;
+}
+
+footer {
+    color: white;
+    text-align: center;
+    margin-top: 24rem;
+    font-size: 1.5rem;
 }
 
 @keyframes fade-in {
@@ -76,7 +83,7 @@ h2 {
 
 .difficulty-view {
     display: none;
-    margin: 10rem auto 3rem;
+    margin: 7rem auto 3rem;
     text-align: center;
 }
 .difficulty-view.loaded {
@@ -96,12 +103,12 @@ h2 {
     border-radius: 0.5rem;
     padding: 1rem 2rem;
     margin-right: 1rem;
-    font-size: 1rem;
+    font-size: 1.5rem;
     font-family: "Gloria Hallelujah", cursive;
 }
 
 .wheel-view {
-    margin: 10rem auto;
+    margin: 1rem auto 0;
     display: none;
 }
 
@@ -109,19 +116,18 @@ h2 {
     margin: 0 auto;
 }
 
-#wheel-img {
+#wheel-svg {
     position: relative;
     display: block;
-    width: 55rem;
+    width: 60rem;
     margin: 0 auto;
+    transform-origin: center;
 }
 
 #triangle-img {
     width: 5rem;
     height: 5rem;
     position: absolute;
-    top: 16.7rem;
-    left: 47.1%;
+    top: 11rem;
+    left: 47%;
 }
-
-/* ---------------------------Keyframes--------------------- */
