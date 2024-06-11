@@ -16,14 +16,88 @@ h1 {
     font-size: 3rem;
 }
 
-/* button {
-    color: white;
-} */
+h2 {
+    font-size: 2rem;
+    margin-bottom: 4rem;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 0.25;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+    70% {
+        opacity: 0.75;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+    }
+    25% {
+        opacity: 0.75;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+    70% {
+        opacity: 0.25;
+    }
+    100% {
+        opacity: 0;
+    }
+}
 
 /* -------------------------Index.html------------------ */
+/* ---------audio-------- */
+.speaker-icon {
+    fill: white;
+    position: fixed;
+    top: 0.8rem;
+    left: 0.5rem;
+}
+
+.speaker-icon-muted {
+    display: none;
+}
+
+/* -------------Difficulty View--------- */
+
 .difficulty-view {
-    margin: 0 auto;
+    display: none;
+    margin: 10rem auto 3rem;
     text-align: center;
+}
+.difficulty-view.loaded {
+    display: block;
+    animation: fade-in 2s ease-in normal;
+}
+
+.difficulty-view.fade-out {
+    animation: fade-out 1s;
+}
+
+.difficulty-view:last-child {
+    margin-right: 0;
+}
+.difficulty-btns {
+    border: none;
+    border-radius: 0.5rem;
+    padding: 1rem 2rem;
+    margin-right: 1rem;
+    font-size: 1rem;
+    font-family: "Gloria Hallelujah", cursive;
 }
 
 .wheel-view {
@@ -49,3 +123,5 @@ h1 {
     top: 16.7rem;
     left: 47.1%;
 }
+
+/* ---------------------------Keyframes--------------------- */
