@@ -1,0 +1,47 @@
+/* -------------------------game.html------------------ */
+
+html {
+    font-family: "Lora", serif;
+    background-image: linear-gradient(to bottom, black, #e5e4e2);
+}
+body {
+    height: 100vh;
+    background-size: cover;
+}
+
+.letters {
+    width: 70%;
+    margin: 16rem auto;
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+    row-gap: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.alphabet {
+    text-transform: uppercase;
+    text-align: center;
+    color: white;
+    width: 10%;
+    border-radius: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    background-color: #e68c0e;
+    padding: 0.8rem 1.5rem;
+}
+
+.icon {
+    fill: white;
+}
+
+.icons-header {
+    display: flex;
+    gap: 1rem;
+}
+
+.lives {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}
