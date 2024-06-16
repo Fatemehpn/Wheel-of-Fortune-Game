@@ -6,9 +6,22 @@
 const difficultyView = document.querySelector(".difficulty-view");
 const wheelView = document.querySelector(".wheel-view");
 const difficultyHeader = document.querySelector(".difficulty-view h2");
+const gameView = document.querySelector(".game-view");
 
-// difficulty buttons
+// game view elements
+const alphabetSection = document.querySelector(".letters");
+const hiddenwordWrapper = document.querySelector(".empty-space");
+const livesWrapperElem = document.querySelector(".lives");
+
+// ----->BUTTONS
+// ---------->difficulty buttons
 const difficultyBtns = document.querySelectorAll(".difficulty-btns");
+// ---------->spin button
+const spinBtn = document.querySelector(".spin-btn");
+// ---------->start game button
+const StartGameBtn = document.querySelector(".start-game-btn");
+// ---------->replay button
+const replayBtn = document.querySelector(".replay-icon");
 
 // audio element
 const audioElem = document.getElementById("audio");
@@ -34,6 +47,79 @@ const slice600 = document.getElementById("class-600");
 const slice100 = document.getElementById("class-100");
 const sliceSpinAgain = document.getElementById("spin-again");
 
+// Set of words
+const easyWords = [
+    "apple",
+    "banana",
+    "cat",
+    "dog",
+    "egg",
+    "fish",
+    "grape",
+    "hat",
+    "ice",
+    "jump",
+    "kite",
+    "lemon",
+    "moon",
+    "nest",
+    "orange",
+    "pig",
+    "queen",
+    "rose",
+    "sun",
+    "tree",
+];
+
+const normalWords = [
+    "bicycle",
+    "camera",
+    "dolphin",
+    "elephant",
+    "forest",
+    "garden",
+    "helicopter",
+    "island",
+    "jungle",
+    "kangaroo",
+    "leopard",
+    "mountain",
+    "notebook",
+    "octopus",
+    "parrot",
+    "quicksand",
+    "rainbow",
+    "snowflake",
+    "tornado",
+    "umbrella",
+];
+
+const difficultWords = [
+    "acknowledge",
+    "benevolent",
+    "courageous",
+    "diligent",
+    "effervescent",
+    "fortunate",
+    "gratitude",
+    "harmonious",
+    "illuminate",
+    "jovial",
+    "knowledgeable",
+    "luxurious",
+    "magnificent",
+    "nostalgic",
+    "optimistic",
+    "perseverance",
+    "reliable",
+    "sophisticated",
+    "tenacity",
+    "versatile",
+];
+
+// declaring empty array for splitted word
+let splittedWord = "";
+
 // array getElementById
 let allSlices = [
     slice150,
@@ -51,10 +137,14 @@ let allSlices = [
 ];
 
 let allDegs = [];
-// funtion to get the index of the max value in an array
+
+// elements to be hidden on the first load
+gameView.style.display = "none";
+livesWrapperElem.style.display = "none";
+replayBtn.style.display = "none";
 
 // event listener to rotate the wheel and get the highest pie
-pointerElem.addEventListener("click", () => {
+spinBtn.addEventListener("click", () => {
     // debugger;
     let degree = Math.floor(Math.random() * 720) + 720;
     allDegs.push(degree);
@@ -124,4 +214,68 @@ audioIconsElem.addEventListener("click", () => {
         unmutedAudio.style.display = "none";
         mutedAudio.style.display = "block";
     }
+});
+
+// event listener on start game button to hide the wheel and display game view
+StartGameBtn.addEventListener("click", () => {
+    wheelView.style.display = "none";
+    gameView.style.display = "block";
+    livesWrapperElem.style.display = "block";
+    replayBtn.style.display = "block";
+});
+
+//--------------- Game View functions and event listeners------------
+
+// make an array of all the alphabets
+const joinedAlphabets = "abcdefghijklmnopqrstuvwxyz";
+const alphabetsArray = joinedAlphabets.split("");
+
+alphabetsArray.forEach((alphabet) => {
+    const alphabetElem = document.createElement("p");
+    alphabetElem.innerText = alphabet;
+    alphabetElem.classList.add("alphabet");
+    alphabetSection.appendChild(alphabetElem);
+});
+
+// make an array of alphabet p tags
+const alphabetElemArray = document.querySelectorAll(".letters p");
+
+// easy round
+// function generating random index number for array of words
+function randomArrayIndex() {
+    const randomIndex = Math.floor(Math.random() * 20);
+    return randomIndex;
+}
+
+// function to generate blanks based on the selected word
+function generateBlanks(word) {
+    splittedWord = word.split("");
+    const wordLength = splittedWord.length;
+    splittedWord.forEach((letter) => {
+        const blankSpace = document.createElement("p");
+        blankSpace.innerHTML = "&#8212;";
+        blankSpace.classList.add("blank-character");
+        hiddenwordWrapper.appendChild(blankSpace);
+    });
+}
+
+// const blank spaces
+generateBlanks("suspicous");
+const blankElemsArray = document.querySelectorAll(".empty-space p");
+
+alphabetElemArray.forEach((letter) => {
+    letter.addEventListener("click", () => {
+        console.log(letter.innerText);
+        splittedWord.forEach((guessLetter) => {
+            if (letter.innerText.toLowerCase() === guessLetter.toLowerCase()) {
+                for (let i = 0; i < splittedWord.length; i++) {
+                    if (guessLetter === splittedWord[i]) {
+                        blankElemsArray[i].innerText = letter.innerText;
+                    }
+                }
+            } else {
+                console.log("false");
+            }
+        });
+    });
 });
