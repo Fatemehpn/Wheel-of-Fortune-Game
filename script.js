@@ -12,6 +12,7 @@ const gameView = document.querySelector(".game-view");
 const alphabetSection = document.querySelector(".letters");
 const hiddenwordWrapper = document.querySelector(".empty-space");
 const livesWrapperElem = document.querySelector(".lives");
+const livesIcon = Array.from(document.querySelectorAll(".lives svg"));
 
 // ----->BUTTONS
 // ---------->difficulty buttons
@@ -117,9 +118,31 @@ const difficultWords = [
     "versatile",
 ];
 
+// object of difficulty arrays
+const wordArrays = {
+    easy: easyWords,
+    normal: normalWords,
+    difficult: difficultWords,
+};
+
+// declaring empty variable to store difficulty level
+let difficultyLevel = "";
+
+//declaring empty variable to store the random word
+let randomWord = "";
+
 // declaring empty array for splitted word
 let splittedWord = "";
 
+// declaring empty array to store all the blank spaces based on the random word
+let blankElemsArray = [];
+
+// empty variables for current lives and losing lives
+let currentLives = 3;
+let losingLives = 0;
+
+// declaring wrong guess counter variable
+let wrongGuessCounter = 0;
 // array getElementById
 let allSlices = [
     slice150,
@@ -142,6 +165,34 @@ let allDegs = [];
 gameView.style.display = "none";
 livesWrapperElem.style.display = "none";
 replayBtn.style.display = "none";
+
+// event listener on window to animate the difficulty view with delay
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        difficultyView.classList.add("loaded");
+    }, 500);
+});
+
+// event listener to mute the music
+audioIconsElem.addEventListener("click", () => {
+    if (audioElem.muted) {
+        audioElem.muted = false;
+        unmutedAudio.style.display = "block";
+        mutedAudio.style.display = "none";
+    } else {
+        audioElem.muted = true;
+        unmutedAudio.style.display = "none";
+        mutedAudio.style.display = "block";
+    }
+});
+
+// event listener on start game button to hide the wheel and display game view
+StartGameBtn.addEventListener("click", () => {
+    wheelView.style.display = "none";
+    gameView.style.display = "block";
+    livesWrapperElem.style.display = "block";
+    replayBtn.style.display = "block";
+});
 
 // event listener to rotate the wheel and get the highest pie
 spinBtn.addEventListener("click", () => {
@@ -185,43 +236,52 @@ spinBtn.addEventListener("click", () => {
     console.log(maxY);
 });
 
+// function generating random index number for array of words
+function randomArrayIndex() {
+    const randomIndex = Math.floor(Math.random() * 20);
+    return randomIndex;
+}
+
+// function to generate blanks based on the selected word
+function generateBlanks(word) {
+    splittedWord = word.split("");
+    // const wordLength = splittedWord.length;
+    splittedWord.forEach(() => {
+        const blankSpace = document.createElement("p");
+        blankSpace.innerHTML = "&#8212;";
+        blankSpace.classList.add("blank-character");
+        hiddenwordWrapper.appendChild(blankSpace);
+    });
+    blankElemsArray = document.querySelectorAll(".empty-space p");
+}
+
 // event listener on difficulty buttons
 difficultyBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
         difficultyView.classList.add("fade-out");
+        // store the difficulty level
+        difficultyLevel = btn.innerText.toLowerCase();
+        if (difficultyLevel === "easy") {
+            livesIcon[3].style.display = "none";
+            livesIcon[4].style.display = "none";
+            livesIcon.pop();
+            livesIcon.pop();
+            console.log(livesIcon);
+        } else if (difficultyLevel === "normal") {
+            livesIcon[4].style.display = "none";
+            livesIcon.pop();
+        }
+        // function to pick one of the words
+        // based on the difficulty level
+        const randomIndex = randomArrayIndex();
+        randomWord = wordArrays[difficultyLevel][randomIndex];
+        console.log(randomWord);
+        generateBlanks(randomWord);
         setTimeout(() => {
             difficultyView.style.display = "none";
             wheelView.style.display = "block";
         }, 1000);
     });
-});
-
-// event listener on window to animate the difficulty view with delay
-window.addEventListener("load", () => {
-    setTimeout(() => {
-        difficultyView.classList.add("loaded");
-    }, 500);
-});
-
-// event listener to mute the music
-audioIconsElem.addEventListener("click", () => {
-    if (audioElem.muted) {
-        audioElem.muted = false;
-        unmutedAudio.style.display = "block";
-        mutedAudio.style.display = "none";
-    } else {
-        audioElem.muted = true;
-        unmutedAudio.style.display = "none";
-        mutedAudio.style.display = "block";
-    }
-});
-
-// event listener on start game button to hide the wheel and display game view
-StartGameBtn.addEventListener("click", () => {
-    wheelView.style.display = "none";
-    gameView.style.display = "block";
-    livesWrapperElem.style.display = "block";
-    replayBtn.style.display = "block";
 });
 
 //--------------- Game View functions and event listeners------------
@@ -240,32 +300,11 @@ alphabetsArray.forEach((alphabet) => {
 // make an array of alphabet p tags
 const alphabetElemArray = document.querySelectorAll(".letters p");
 
-// easy round
-// function generating random index number for array of words
-function randomArrayIndex() {
-    const randomIndex = Math.floor(Math.random() * 20);
-    return randomIndex;
-}
-
-// function to generate blanks based on the selected word
-function generateBlanks(word) {
-    splittedWord = word.split("");
-    const wordLength = splittedWord.length;
-    splittedWord.forEach((letter) => {
-        const blankSpace = document.createElement("p");
-        blankSpace.innerHTML = "&#8212;";
-        blankSpace.classList.add("blank-character");
-        hiddenwordWrapper.appendChild(blankSpace);
-    });
-}
-
-// const blank spaces
-generateBlanks("suspicous");
-const blankElemsArray = document.querySelectorAll(".empty-space p");
-
 alphabetElemArray.forEach((letter) => {
     letter.addEventListener("click", () => {
+        wrongGuessCounter = 0;
         console.log(letter.innerText);
+        console.log(splittedWord);
         splittedWord.forEach((guessLetter) => {
             if (letter.innerText.toLowerCase() === guessLetter.toLowerCase()) {
                 for (let i = 0; i < splittedWord.length; i++) {
@@ -274,8 +313,14 @@ alphabetElemArray.forEach((letter) => {
                     }
                 }
             } else {
-                console.log("false");
+                console.log(false);
+                wrongGuessCounter += 1;
+                console.log(wrongGuessCounter);
             }
         });
+        if (wrongGuessCounter === splittedWord.length) {
+            console.log(livesIcon);
+            livesIcon.pop().style.display = "none";
+        }
     });
 });
