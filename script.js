@@ -5,14 +5,24 @@
 // views
 const difficultyView = document.querySelector(".difficulty-view");
 const wheelView = document.querySelector(".wheel-view");
+const wheelElem = document.getElementById("wheel-svg");
 const difficultyHeader = document.querySelector(".difficulty-view h2");
 const gameView = document.querySelector(".game-view");
+const winGameView = document.querySelector(".win-game");
+const gameOverView = document.querySelector(".game-over");
+const activeGameView = document.querySelector(".active-game");
 
 // game view elements
 const alphabetSection = document.querySelector(".letters");
 const hiddenwordWrapper = document.querySelector(".empty-space");
 const livesWrapperElem = document.querySelector(".lives");
-const livesIcon = Array.from(document.querySelectorAll(".lives svg"));
+let livesIcon = Array.from(document.querySelectorAll(".lives svg"));
+const life1 = document.querySelector(".icon-1");
+const life2 = document.querySelector(".icon-2");
+const life3 = document.querySelector(".icon-3");
+const life4 = document.querySelector(".icon-4");
+const life5 = document.querySelector(".icon-5");
+const scoreElem = document.querySelector(".score");
 
 // ----->BUTTONS
 // ---------->difficulty buttons
@@ -23,6 +33,12 @@ const spinBtn = document.querySelector(".spin-btn");
 const StartGameBtn = document.querySelector(".start-game-btn");
 // ---------->replay button
 const replayBtn = document.querySelector(".replay-icon");
+// ---------->play again button when losing the game
+const playAgainBtn = document.querySelector(".play-again-btn");
+// ---------->Continue playing button in the case they win the game
+const continuePlayingBtn = document.querySelector(".continue-playing");
+// ---------->Start over button which is the same as replay button that reloads the entire game
+const startOverBtn = document.querySelector(".start-over-btn");
 
 // audio element
 const audioElem = document.getElementById("audio");
@@ -46,7 +62,7 @@ const slice200 = document.getElementById("class-200");
 const slice450 = document.getElementById("class-450");
 const slice600 = document.getElementById("class-600");
 const slice100 = document.getElementById("class-100");
-const sliceSpinAgain = document.getElementById("spin-again");
+const sliceSpinAgain = document.getElementById("class-spin-again");
 
 // Set of words
 const easyWords = [
@@ -137,12 +153,18 @@ let splittedWord = "";
 // declaring empty array to store all the blank spaces based on the random word
 let blankElemsArray = [];
 
-// empty variables for current lives and losing lives
-let currentLives = 3;
-let losingLives = 0;
+// declaring a boolean variable to know if they guessed the word right ot wrong
+let guessBoolean = false;
 
 // declaring wrong guess counter variable
 let wrongGuessCounter = 0;
+
+// declaring an empty variable for pie score
+let pieScore = "";
+
+// declare a variable to get the accumulative score
+let accumulativeScore = "";
+
 // array getElementById
 let allSlices = [
     slice150,
@@ -192,48 +214,60 @@ StartGameBtn.addEventListener("click", () => {
     gameView.style.display = "block";
     livesWrapperElem.style.display = "block";
     replayBtn.style.display = "block";
+    gameOverView.style.display = "none";
+    winGameView.style.display = "none";
+    activeGameView.style.display = "block";
 });
+let degrees = 0;
 
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 // event listener to rotate the wheel and get the highest pie
 spinBtn.addEventListener("click", () => {
     // debugger;
-    let degree = Math.floor(Math.random() * 720) + 720;
-    allDegs.push(degree);
-    console.log(allDegs);
-    if (allDegs[1] > allDegs[0]) {
-        entireWheel.style.transform = `rotate(${degree}deg)`;
-        allDegs.shift();
-        console.log(allDegs);
-    } else if (allDegs[1] < allDegs[0]) {
-        allDegs[1] = allDegs[1] + allDegs[0];
-        entireWheel.style.transform = `rotate(${allDegs[1]}deg)`;
-        allDegs.shift();
-        console.log(allDegs);
-    }
-    // if (allDegs.length <= 1) {
-    //     allDegs.push(degree);
-    //     entireWheel.style.transform = `rotate(${degree}deg)`;
-    // } else if (allDegs.length == 2) {
-    //     if (allDegs[1] < allDegs[0]) {
-    //         degree = allDegs[0] + allDegs[1];
-    //         entireWheel.style.transform = `rotate(${degree}deg)`;
-    //     } else {
-    //         entireWheel.style.transform = `rotate(${degree}deg)`;
-    //     }
-    // } else if (allDegs.length > 2) {
-    //     allDegs.shift();
-    // }
+    let newDegree = getRandomInt(1500, 2500);
+    degrees = degrees + newDegree;
+    entireWheel.style.transform = `rotate(${degrees}deg)`;
 
-    console.log(degree);
-    let boundingValues = [];
-    allSlices.forEach((slice) => {
-        const boundingClientSlice = slice.getBoundingClientRect();
-        const yValue = boundingClientSlice.y;
-        boundingValues.push(yValue);
+    wheelElem.addEventListener("transitionend", () => {
+        let boundingValues = [];
+        allSlices.forEach((slice) => {
+            const boundingClientSlice = slice.getBoundingClientRect();
+            const yValue = boundingClientSlice.y;
+            boundingValues.push(yValue);
+        });
+        console.log(boundingValues);
+        let minY = Math.min(...boundingValues);
+        let indexMinY = boundingValues.indexOf(minY);
+        console.log(indexMinY);
+        let splitIdNamePieElem = allSlices[indexMinY].id.split("-");
+        pieScore = splitIdNamePieElem[1];
+        console.log(pieScore);
+        if (pieScore === "spin") {
+            StartGameBtn.style.display = "none";
+        } else {
+            StartGameBtn.style.display = "block";
+            spinBtn.style.display = "none";
+        }
     });
+});
 
-    let maxY = Math.max(...boundingValues);
-    console.log(maxY);
+// event listener on play again button while playing
+replayBtn.addEventListener("click", () => {
+    location.reload();
+});
+
+// event listener to play again in case they lose
+playAgainBtn.addEventListener("click", () => {
+    location.reload();
+});
+
+// event listener to start over when winning the game
+startOverBtn.addEventListener("click", () => {
+    location.reload();
 });
 
 // function generating random index number for array of words
@@ -245,7 +279,6 @@ function randomArrayIndex() {
 // function to generate blanks based on the selected word
 function generateBlanks(word) {
     splittedWord = word.split("");
-    // const wordLength = splittedWord.length;
     splittedWord.forEach(() => {
         const blankSpace = document.createElement("p");
         blankSpace.innerHTML = "&#8212;";
@@ -253,6 +286,48 @@ function generateBlanks(word) {
         hiddenwordWrapper.appendChild(blankSpace);
     });
     blankElemsArray = document.querySelectorAll(".empty-space p");
+}
+
+// function to clear the blanksElem after the right guess
+// function clearBlanks(word) {
+//     word.forEach((letter) => {
+//         letter.innerHTML = "";
+//     });
+// }
+
+// event listener on continue playing button in case they win
+continuePlayingBtn.addEventListener("click", () => {
+    gameView.style.display = "none";
+    livesWrapperElem.style.display = "none";
+    replayBtn.style.display = "none";
+    difficultyView.style.display = "block";
+    difficultyBtns.disabled = false;
+    StartGameBtn.style.display = "none";
+    spinBtn.style.display = "block";
+    alphabetElemArray.forEach((alphabet) => {
+        alphabet.style.visibility = "visible";
+        alphabet.classList.remove("disabled");
+    });
+    livesIcon.innerHTML = "";
+    livesIcon = [life1, life2, life3, life4, life5];
+    console.log(livesIcon);
+    blankElemsArray = [];
+    hiddenwordWrapper.innerHTML = "";
+});
+
+// function game over
+function gameOver() {
+    console.log("Game Over");
+
+    // diactivate the letters
+    alphabetArray.forEach((alphabet) => {
+        alphabet.classList.add("disabled");
+    });
+    accumulativeScore = 0;
+    scoreElem.innerText = accumulativeScore;
+    replayBtn.style.display = "none";
+    gameOverView.style.display = "block";
+    activeGameView.style.display = "none";
 }
 
 // event listener on difficulty buttons
@@ -280,7 +355,7 @@ difficultyBtns.forEach((btn) => {
         setTimeout(() => {
             difficultyView.style.display = "none";
             wheelView.style.display = "block";
-        }, 1000);
+        }, 300);
     });
 });
 
@@ -299,12 +374,35 @@ alphabetsArray.forEach((alphabet) => {
 
 // make an array of alphabet p tags
 const alphabetElemArray = document.querySelectorAll(".letters p");
+// const alphabetElemArrayCopy = document.querySelectorAll(".letters p");
+
+// make an array from the node list of the alphabets
+const alphabetArray = Array.from(alphabetElemArray);
+
+// function won the game
+function gameWin() {
+    debugger;
+    console.log(alphabetArray);
+    // diactivate the letters
+    alphabetArray.forEach((alphabet) => {
+        alphabet.classList.add("disabled");
+    });
+    accumulativeScore = Number(accumulativeScore) + Number(pieScore);
+    scoreElem.innerHTML = accumulativeScore;
+    console.log(accumulativeScore);
+    replayBtn.style.display = "none";
+    gameOverView.style.display = "none";
+    winGameView.style.display = "block";
+    activeGameView.style.display = "none";
+    console.log("you won🥇");
+}
 
 alphabetElemArray.forEach((letter) => {
     letter.addEventListener("click", () => {
         wrongGuessCounter = 0;
         console.log(letter.innerText);
         console.log(splittedWord);
+
         splittedWord.forEach((guessLetter) => {
             if (letter.innerText.toLowerCase() === guessLetter.toLowerCase()) {
                 for (let i = 0; i < splittedWord.length; i++) {
@@ -318,9 +416,48 @@ alphabetElemArray.forEach((letter) => {
                 console.log(wrongGuessCounter);
             }
         });
+        letter.style.visibility = "hidden";
+
+        // array of innertext of blankElemsArray after user guess the letters
+        let guessWordArray = [];
+        blankElemsArray.forEach((blank) => {
+            const blankInnerText = blank.innerText.toLowerCase();
+            guessWordArray.push(blankInnerText);
+            console.log(guessWordArray);
+        });
+
+        //----------> check if the guessed word matches the random selected word
+        // boolean to see if they made a right guess
+        let rightGuess = [];
+        splittedWord.forEach((letter) => {
+            const guessArryaIncludesRandomLetter =
+                guessWordArray.includes(letter);
+            rightGuess.push(guessArryaIncludesRandomLetter);
+        });
+
+        const isAllTrue = (currentValue) => currentValue === true;
+        if (rightGuess.every(isAllTrue)) {
+            guessBoolean = true;
+
+            gameWin();
+        } else {
+            console.log("keep playing");
+            guessBoolean = false;
+        }
+        // <--------------------------------
+
         if (wrongGuessCounter === splittedWord.length) {
+            debugger;
             console.log(livesIcon);
-            livesIcon.pop().style.display = "none";
+            if (livesIcon.length === 1) {
+                gameOver();
+            }
+            const deletedLife = livesIcon.pop();
+            console.log(livesIcon.length);
+            if (deletedLife) {
+                deletedLife.style.display = "none";
+            }
+            console.log(livesIcon);
         }
     });
 });
