@@ -23,6 +23,8 @@ const life3 = document.querySelector(".icon-3");
 const life4 = document.querySelector(".icon-4");
 const life5 = document.querySelector(".icon-5");
 const scoreElem = document.querySelector(".score");
+const winScoreElem = document.querySelector(".win-score");
+const scoreWinView = document.querySelector(".win-view-score");
 
 // ----->BUTTONS
 // ---------->difficulty buttons
@@ -239,13 +241,11 @@ spinBtn.addEventListener("click", () => {
             const yValue = boundingClientSlice.y;
             boundingValues.push(yValue);
         });
-        console.log(boundingValues);
         let minY = Math.min(...boundingValues);
         let indexMinY = boundingValues.indexOf(minY);
-        console.log(indexMinY);
         let splitIdNamePieElem = allSlices[indexMinY].id.split("-");
         pieScore = splitIdNamePieElem[1];
-        console.log(pieScore);
+
         if (pieScore === "spin") {
             StartGameBtn.style.display = "none";
         } else {
@@ -288,13 +288,6 @@ function generateBlanks(word) {
     blankElemsArray = document.querySelectorAll(".empty-space p");
 }
 
-// function to clear the blanksElem after the right guess
-// function clearBlanks(word) {
-//     word.forEach((letter) => {
-//         letter.innerHTML = "";
-//     });
-// }
-
 // event listener on continue playing button in case they win
 continuePlayingBtn.addEventListener("click", () => {
     gameView.style.display = "none";
@@ -310,15 +303,13 @@ continuePlayingBtn.addEventListener("click", () => {
     });
     livesIcon.innerHTML = "";
     livesIcon = [life1, life2, life3, life4, life5];
-    console.log(livesIcon);
+
     blankElemsArray = [];
     hiddenwordWrapper.innerHTML = "";
 });
 
 // function game over
 function gameOver() {
-    console.log("Game Over");
-
     // diactivate the letters
     alphabetArray.forEach((alphabet) => {
         alphabet.classList.add("disabled");
@@ -333,6 +324,9 @@ function gameOver() {
 // event listener on difficulty buttons
 difficultyBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
+        livesIcon.forEach((icon) => {
+            icon.style.display = "inline";
+        });
         difficultyView.classList.add("fade-out");
         // store the difficulty level
         difficultyLevel = btn.innerText.toLowerCase();
@@ -341,7 +335,6 @@ difficultyBtns.forEach((btn) => {
             livesIcon[4].style.display = "none";
             livesIcon.pop();
             livesIcon.pop();
-            console.log(livesIcon);
         } else if (difficultyLevel === "normal") {
             livesIcon[4].style.display = "none";
             livesIcon.pop();
@@ -381,27 +374,22 @@ const alphabetArray = Array.from(alphabetElemArray);
 
 // function won the game
 function gameWin() {
-    debugger;
-    console.log(alphabetArray);
     // diactivate the letters
     alphabetArray.forEach((alphabet) => {
         alphabet.classList.add("disabled");
     });
     accumulativeScore = Number(accumulativeScore) + Number(pieScore);
     scoreElem.innerHTML = accumulativeScore;
-    console.log(accumulativeScore);
+    winScoreElem.innerHTML = accumulativeScore;
     replayBtn.style.display = "none";
     gameOverView.style.display = "none";
     winGameView.style.display = "block";
     activeGameView.style.display = "none";
-    console.log("you won🥇");
 }
 
 alphabetElemArray.forEach((letter) => {
     letter.addEventListener("click", () => {
         wrongGuessCounter = 0;
-        console.log(letter.innerText);
-        console.log(splittedWord);
 
         splittedWord.forEach((guessLetter) => {
             if (letter.innerText.toLowerCase() === guessLetter.toLowerCase()) {
@@ -411,9 +399,7 @@ alphabetElemArray.forEach((letter) => {
                     }
                 }
             } else {
-                console.log(false);
                 wrongGuessCounter += 1;
-                console.log(wrongGuessCounter);
             }
         });
         letter.style.visibility = "hidden";
@@ -423,7 +409,6 @@ alphabetElemArray.forEach((letter) => {
         blankElemsArray.forEach((blank) => {
             const blankInnerText = blank.innerText.toLowerCase();
             guessWordArray.push(blankInnerText);
-            console.log(guessWordArray);
         });
 
         //----------> check if the guessed word matches the random selected word
@@ -441,23 +426,19 @@ alphabetElemArray.forEach((letter) => {
 
             gameWin();
         } else {
-            console.log("keep playing");
             guessBoolean = false;
         }
         // <--------------------------------
 
         if (wrongGuessCounter === splittedWord.length) {
-            debugger;
-            console.log(livesIcon);
             if (livesIcon.length === 1) {
                 gameOver();
             }
             const deletedLife = livesIcon.pop();
-            console.log(livesIcon.length);
+
             if (deletedLife) {
                 deletedLife.style.display = "none";
             }
-            console.log(livesIcon);
         }
     });
 });

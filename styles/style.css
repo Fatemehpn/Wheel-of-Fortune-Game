@@ -82,11 +82,6 @@ footer {
 .icon {
     fill: white;
 }
-/* .speaker-icon {
-    position: fixed;
-    top: 0.8rem;
-    left: 0.5rem;
-} */
 
 .speaker-icon-muted {
     display: none;
@@ -158,8 +153,8 @@ footer {
     width: 3rem;
     height: 3rem;
     position: absolute;
-    top: 10.8rem;
-    left: 48%;
+    top: 11.5rem;
+    left: 48.3%;
 }
 
 .wheel-buttons {
@@ -241,18 +236,38 @@ footer {
 }
 
 .score-wrapper {
-    color: white;
+    color: black;
+    font-size: 1.5rem;
+    width: 10%;
+    background-color: white;
+    text-align: center;
+    border-radius: 0.2rem;
 }
-
+.win-view-score {
+    font-size: 1.2rem;
+    margin: 0.5rem auto 2rem;
+    width: 20%;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    background-color: white;
+    color: black;
+}
 .disabled {
     pointer-events: none;
 }
 
 .section-end-game {
+    border-radius: 1rem;
     margin: 12rem auto;
-    padding: 2rem 4rem;
-    width: 60%;
+    padding: 3rem 4rem;
+    width: 50%;
     background-color: #e9d66b;
+    border: 0.3rem solid #ffcc33;
+    text-align: center;
+    font-size: 1.5rem;
+}
+.section-end-game p {
+    margin-top: 0;
 }
 .section-end-game button {
     font-family: "Gloria Hallelujah", cursive;
@@ -261,7 +276,7 @@ footer {
     color: black;
     border: none;
     padding: 1rem 2rem;
-    border-radius: 0.2rem;
+    border-radius: 0.5rem;
 }
 .win-game div {
     text-align: center;

@@ -1322,7 +1322,7 @@
             <section class="game-view">
                 <section class="active-game">
                     <div class="score-wrapper">
-                        Score:<span class="score"></span>
+                        <p>Score:<span class="score">0</span></p>
                     </div>
                     <div class="empty-space-wrapper">
                         <div class="empty-space"></div>
@@ -1331,6 +1331,10 @@
                 </section>
                 <section class="win-game section-end-game">
                     <div>
+                        <p>You won the game!</p>
+                        <p class="win-view-score">
+                            Score:<span class="win-score"></span>
+                        </p>
                         <button class="continue-playing">
                             Continue Playing</button
                         ><button class="start-over-btn">Start Over</button>
@@ -1338,6 +1342,7 @@
                 </section>
                 <section class="game-over section-end-game">
                     <div>
+                        <p>Oops! Better luck next spin!</p>
                         <button class="play-again-btn">Play Agian</button>
                     </div>
                 </section>
